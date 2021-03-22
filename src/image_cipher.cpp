@@ -46,8 +46,8 @@ std::vector<unsigned int> create_vector_from_key(char const* filename,
   std::ifstream key_file{filename};
   std::string key{};
   std::getline(key_file, key);
-  auto [x_0, lambda]{generate_seed_and_lambda(key)};
-  return std::move(generate_key_sequence(size, x_0, lambda));
+  auto x_0{generate_seed(key)};
+  return std::move(generate_key_sequence(size, x_0, 4));
 }
 
 // almacena los pixeles de un vector dado en una estructura image dada (para
@@ -61,19 +61,20 @@ void vector_to_raw_data(std::vector<unsigned int> const& img_vector,
 }
 
 // dado un string genera x_0 y lambda usando los 10 primeros caracteres
-std::pair<double, double> generate_seed_and_lambda(std::string key) {
-  double lambda{0};
+double generate_seed(std::string key) {
+  // double lambda{0};
   std::bitset<40> even_bits{};
   std::bitset<40> odd_bits{};
   for (int i{0}; i < 10; ++i) {
     std::bitset<8> bitform_key{static_cast<unsigned long long>(key[i])};
-    lambda += static_cast<double>(key[i]);
+    // lambda += static_cast<double>(key[i]);
     for (int k{0}; k < 8; k += 2) {
       even_bits[i * 8 + k] = bitform_key[k];
       even_bits[i * 8 + k + 1] = bitform_key[k + 1];
     }
   }
-  lambda = (lambda / 0x1'000'00) + 3.996'093'75; // (5^8(2^8-1))/10^8
+  // lambda = (lambda / 0x1'000'00) + 3.999'999'999'767'17; //
+  // (5^x(2^(x+2)-1))/10^x; x= 32
 
   double seed{static_cast<double>(even_bits.to_ulong() + odd_bits.to_ulong())};
   seed /= 0x10'000'000'000; // 2^40
@@ -82,5 +83,5 @@ std::pair<double, double> generate_seed_and_lambda(std::string key) {
   if (seed == 0) {
     seed += 0.5;
   }
-  return std::make_pair(seed, lambda);
+  return seed;
 }

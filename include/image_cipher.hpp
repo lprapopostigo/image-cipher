@@ -23,4 +23,4 @@ std::vector<unsigned int> create_vector_from_key(char const* filename,
                                                  int size);
 void vector_to_raw_data(std::vector<unsigned int> const& pixel_vector,
                         image const& img);
-std::pair<double, double> generate_seed_and_lambda(std::string key);
+double generate_seed(std::string key);
