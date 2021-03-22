@@ -14,16 +14,8 @@ struct image {
   int channels{0};
 };
 
-struct rgb_color {
-  u_int8_t r{};
-  u_int8_t g{};
-  u_int8_t b{};
-};
-
 std::vector<unsigned int> generate_key_sequence(unsigned int size, double x_0,
                                                 double lambda);
-unsigned int rgb_to_decimal(unsigned char r, unsigned char g, unsigned char b);
-rgb_color decimal_to_rgb(unsigned int color);
 image load_image(char const* filename);
 void write_image(char const* filename, image const& img);
 std::vector<unsigned int> create_vector_from_image(image const& img);

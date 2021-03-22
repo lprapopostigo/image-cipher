@@ -1,40 +1,27 @@
 #include "image_cipher.hpp"
+#include <cmath>
+#include <iostream>
+
 // genera una secuencia pseudo aleatoria de enteros, cuyos valores se encuentran
-// en [0, 2^24)
+// en [0, 254)
 std::vector<unsigned int> generate_key_sequence(unsigned int size, double x_0,
                                                 double lambda) {
   logistic_chaotic_map map{x_0, lambda};
   std::vector<unsigned int> sequence{};
   sequence.resize(size);
   for (unsigned int i{0}; i < size; ++i) {
-    sequence[i] = static_cast<int>(0x1'000'000 * map(i));
+    sequence[i] = static_cast<int>(0x100 * map(i));
   }
   return std::move(sequence);
 }
 
-// crea un vector de enteros a partir de los datos cargados por stbi_load, para
-// cada tripleta r,g,b se realiza la conversion respectiva
 std::vector<unsigned int> create_vector_from_image(image const& img) {
   std::vector<unsigned int> tmp{};
-  tmp.resize(img.height * img.width);
-  int i{0};
-  int j{0};
-  while (i < img.height * img.width * 3) {
-    tmp[j] = rgb_to_decimal(img.data[i], img.data[i + 1], img.data[i + 2]);
-    i += 3;
-    ++j;
+  tmp.resize(img.height * img.width * 3);
+  for (unsigned int i{0}; i < tmp.size(); ++i) {
+    tmp[i] = img.data[i];
   }
   return std::move(tmp);
-}
-
-unsigned int rgb_to_decimal(u_int8_t r, u_int8_t g, u_int8_t b) {
-  return (r << 16) + (g << 8) + b;
-}
-
-rgb_color decimal_to_rgb(unsigned int color) {
-  return rgb_color{static_cast<uint8_t>((color & 0xff0000) >> 16),
-                   static_cast<uint8_t>((color & 0x00ff00) >> 8),
-                   static_cast<uint8_t>(color & 0x0000ff)};
 }
 
 // wrapper para stbi_load, carga la imagen en la memoria y returna la estructura
@@ -65,16 +52,11 @@ std::vector<unsigned int> create_vector_from_key(char const* filename,
 
 // almacena los pixeles de un vector dado en una estructura image dada (para
 // cada pixel del vector se realiza la conversion a rgb)
-void vector_to_raw_data(std::vector<unsigned int> const& pixel_vector,
+void vector_to_raw_data(std::vector<unsigned int> const& img_vector,
                         image const& img) {
 
-  int k{0};
-  for (unsigned int i{0}; i < pixel_vector.size(); ++i) {
-    auto [r, g, b]{decimal_to_rgb(pixel_vector[i])};
-    img.data[k] = r;
-    img.data[k + 1] = g;
-    img.data[k + 2] = b;
-    k += 3;
+  for (unsigned int i{0}; i < img_vector.size(); ++i) {
+    img.data[i] = img_vector[i];
   }
 }
 
@@ -91,7 +73,7 @@ std::pair<double, double> generate_seed_and_lambda(std::string key) {
       even_bits[i * 8 + k + 1] = bitform_key[k + 1];
     }
   }
-  lambda = (lambda / 0x8'000) + 3.875;
+  lambda = (lambda / 0x1'000'00) + 3.996'093'75; // (5^8(2^8-1))/10^8
 
   double seed{static_cast<double>(even_bits.to_ulong() + odd_bits.to_ulong())};
   seed /= 0x10'000'000'000; // 2^40

@@ -4,7 +4,7 @@
 # windows cmake -H. -G "Visual Studio 16 2019" -DCMAKE_EXPORT_COMPILE_COMMANDS=1
 # -Bbuild
 
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.16)
 project(ED-TRABAJO-FINAL LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
