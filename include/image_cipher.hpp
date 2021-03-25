@@ -8,7 +8,7 @@
 #include <vector>
 
 struct image {
-  u_int8_t* data{nullptr};
+  uint8_t* data{nullptr};
   int width{0};
   int height{0};
   int channels{0};
