@@ -9,7 +9,7 @@ project(img-cipher LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_EXPORT_COMPILE_COMMANDS True)
-set(CMAKE_CXX_FLAGS "-Os")
+set(CMAKE_CXX_FLAGS "-O3")
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 

@@ -4,8 +4,12 @@
 #include "image_cipher.hpp"
 #include <iostream>
 
-// USAGE: image-cipher [input] [key] [output]
 int main(int argc, char* argv[]) {
+  if (argc != 4) {
+    std::cout << "USAGE: image-cipher [inputFile] [keyFile] [outputFile]"
+              << std::endl;
+    return 0;
+  }
   // Load img and create a std vector from it
   auto img{load_image(argv[1])};
   auto img_vector{create_vector_from_image(img)};
