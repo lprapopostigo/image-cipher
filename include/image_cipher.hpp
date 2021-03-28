@@ -1,8 +1,7 @@
 #pragma once
 #include "logistic_chaotic_map.hpp"
-#include "stb_image.h"
-#include "stb_image_write.h"
-#include <bits/stdint-uintn.h>
+#include "stb/stb_image.h"
+#include "stb/stb_image_write.h"
 #include <bitset>
 #include <cmath>
 #include <vector>

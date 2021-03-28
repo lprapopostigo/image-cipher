@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-// mapa logistico caotico
+
 class logistic_chaotic_map {
 public:
   logistic_chaotic_map() = default;
