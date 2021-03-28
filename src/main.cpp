@@ -2,19 +2,25 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define STBI_ONLY_PNG
 #include "image_cipher.hpp"
-#include <iostream>
-
+#include <cstdio>
 int main(int argc, char* argv[]) {
   if (argc != 4) {
-    std::cout << "USAGE: image-cipher [inputFile] [keyFile] [outputFile]"
-              << std::endl;
+    printf("USAGE: image-cipher [inputFile] [keyFile] [outputFile]\n");
     return 0;
+  } else if (char_number(argv[2]) != 10) {
+    printf("key must have 10 characters\n");
+    return 1;
   }
-  // Load img and create a std vector from it
+
   auto img{load_image(argv[1])};
+  if (img.data == nullptr) {
+    printf("cannot load image\n");
+    return 1;
+  }
+
   auto img_vector{create_vector_from_image(img)};
 
-  // Load key and create a std vector from it
+  // Given a key, create a vector from it
   auto key_vector{create_vector_from_key(argv[2], img.width * img.height * 3)};
 
   // xor operation between vectors
