@@ -58,11 +58,11 @@ double generate_seed(char const* key) {
   std::bitset<40> even_bits{};
   std::bitset<40> odd_bits{};
   for (uint8_t i{0}; i < 10; ++i) {
-    std::bitset<8> bitform_key{static_cast<unsigned long long>(key[i])};
+    std::bitset<8> bitform_key{static_cast<unsigned long>(key[i])};
     // lambda += static_cast<double>(key[i]);
-    for (uint8_t k{0}; k < 8; k += 2) {
-      even_bits[i * 8 + k] = bitform_key[k];
-      odd_bits[i * 8 + k + 1] = bitform_key[k + 1];
+    for (uint8_t k{0}; k < 4; ++k) {
+      even_bits[k] = bitform_key[i * 4 + k];
+      odd_bits[k] = bitform_key[i * 4 + k + 1];
     }
   }
   // lambda = (lambda / 0x1'000'00) + 3.999'999'999'767'17; //
